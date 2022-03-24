@@ -1,0 +1,90 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+    th{ 
+        color:#fff;
+            }
+</style>
+
+
+<table class="table table-striped">
+    <tr  class="bg-info">
+        <th>Information client</th>
+        <th>Numéro de commande </th>
+        <th>Prix</th>
+        <th>Date</th>
+        <th>Note</th>
+        <th>Produits <button class="btn-refresh" onClick="window.location.reload();">Mettre à jour</button> </th>
+    </tr>
+
+    <tbody id="myTable">
+        
+    </tbody>
+</table>
+
+<script>
+	var myArray = []
+	
+
+	$.ajax({
+		method:'GET',
+		url:  'https://clickeatfirst.herokuapp.com/api/Order/',
+		dataType: 'json',
+		contentType: 'json',
+		success:function(response){
+			console.log("----------------------");
+			//console.log(JSON.stringify(response));
+			myArray = response
+			console.log(myArray);
+			console.log("----------------------2222222");
+			buildTable(myArray)
+
+		}
+	})
+
+
+
+	function buildTable(data){
+		var table = document.getElementById('myTable')
+		console.log(data);
+
+		for (var i = 0; i < data.length; i++){
+			let datestr = new Date(data[i].date);
+			var row = `<tr>
+							<td>${data[i].user.username} : ${data[i].user.email}</td>
+							<td>${data[i].number}</td>
+							<td>${data[i].bill}€</td>
+                            <td>${datestr.toLocaleDateString("fr")}</td>
+                            <td>${data[i].note}</td>
+							`;
+			if(data[i].order_items.length > 1){
+				let produits = '';
+				for(let j = 0; j < data[i].order_items.length; j++){
+					produits += `<p>${data[i].order_items[j].food_items.name} - `;
+					if(data[i].order_items[j].size_large == true){
+						produits += `Menu XL</p>`;
+					}
+					else{
+						produits += `Menu classique</p>`;
+					}
+				}
+				row += `<td>${produits}</td>
+					  </tr>`;
+			}
+			else{
+				row += `<td></td>
+							<td></td>
+
+					  </tr>`;
+			}
+                            
+			table.innerHTML += row
+
+
+		}
+	}
+
+</script>
+
