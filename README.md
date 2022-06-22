@@ -1,6 +1,7 @@
 Creation of a simple web application, which retrieves through REST APIs, the content of a second click and collect web application.
 
 Technology used : 
+
 HTML/CSS  
 AJAX
 
