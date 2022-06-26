@@ -1,6 +1,6 @@
 
 
-<h1>OrderLine<h1>
+<h1>OrderLine</h1>
   Creation of a simple web application, which retrieves through REST APIs, the content of a second click and collect web application.
 
 Technology used : 
